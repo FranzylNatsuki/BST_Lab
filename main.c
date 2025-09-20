@@ -1,4 +1,14 @@
-﻿#include <stdio.h>
+﻿/*
+Code is a store inventory simulator, with a main inventory, a
+store tree that records all sales made, and a goods receipt tree
+that contains all obtained goods. This is all implemented with a
+linked list Binary Tree ADT.
+Franzyl Bjorn L. Macalua
+Date Started: 9/18/2025
+Data Finished: 9/ /2025
+*/
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <conio.h>
@@ -51,12 +61,14 @@ struct goodsNode {
 void menu(void);
 ITEM input(ItemNd root);
 void add_Record(ItemNd *root, ITEM item);
+void add_Sales(SalesNd *root, SALES item);
+void add_Goods(GoodsNd *root, GOODS item);
 bool check_Duplicate(ItemNd root, char search_term[]);
 bool search_Record(ItemNd root, ItemNd *search_result, char search_term[]);
 int edit_ask(void);
 void edit_Record(ItemNd *root);
 void sales(ItemNd i_root, SalesNd *root, int *sales_number_generate);
-void goods_Receipt(GoodsNd *root);
+void goods(ItemNd i_root, GoodsNd *s_root, int *goods_number_generate);
 void Display_All(ItemNd ptr);
 void Display_Sales(SalesNd ptr);
 void Display_Goods(GoodsNd ptr);
@@ -328,10 +340,6 @@ void goods(ItemNd i_root, GoodsNd *s_root, int *goods_number_generate) {
     } else {
         printf("Not Found!\n");
     }
-}
-
-void goods_Receipt(GoodsNd *root) {
-
 }
 
 void Display_All(ItemNd ptr) {
