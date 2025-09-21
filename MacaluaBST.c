@@ -419,12 +419,13 @@ int main(void) {
         scanf("%d", &choice);
         Flush;
         switch (choice) {
-            case 1:
+            case 1: {
                 ITEM entry;
                 entry = input(i_root);
                 add_Record(&i_root, entry);
                 printf("Done...");
                 break;
+			}
             case 2:
                 if (i_root == NULL) {
                     printf("Nothing to edit!\n");
