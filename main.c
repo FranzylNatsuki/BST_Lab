@@ -87,19 +87,19 @@ void menu(void) {
 ITEM input(ItemNd root) {
     bool isValid = false;
     ITEM input;
+    // Flush;
     while (!isValid) {
         printf("Enter Item Number: ");
         gets(input.itemNumber);
+        input.itemNumber[strcspn(input.itemNumber, "\n")] = '\0';
 
         if (check_Duplicate(root, input.itemNumber)) {
+            printf("Item Number already exists\n");
             isValid = false;
+            continue;
         }
-        else if (atoi(input.itemNumber) < 0) {
-            isValid = false;
-        }
-        else {
-            isValid = true;
-        }
+
+        isValid = true;
     }
     printf("Enter Item Name: ");
     gets(input.itemName);
@@ -253,7 +253,7 @@ int edit_ask(void) {
 void edit_Record(ItemNd *root) {
     char search_term[10];
     printf("Enter Item Number: ");
-    Flush;
+    // Flush;
     gets(search_term);
 
     ItemNd ptr = NULL;
@@ -262,6 +262,7 @@ void edit_Record(ItemNd *root) {
         int choice = edit_ask();
 
         if (choice == 1) {
+            bool isValid = false;
             char new_item_name[30];
             Flush;
             printf("Enter New Item Name: \n");
@@ -276,11 +277,12 @@ void edit_Record(ItemNd *root) {
             ptr->item.price = new_price;
         }
         else  {
-           printf("Edit Failed!\n");
+            printf("Edit Failed!\n");
+            return;
         }
         printf("Edit Successful\n");
     } else {
-        printf("Edit Failed\n");
+        printf("Entry Not Found\n");
     }
 }
 
@@ -289,17 +291,26 @@ void sales(ItemNd i_root, SalesNd *s_root, int *sales_number_generate) {
     char search_term[10];
     int sale_quantity = 0;
     ItemNd ptr_i = NULL;
+    bool quantityNotNegative = false;
 
     printf("Enter Item Number: ");
-    Flush;
+    //Flush;
     gets(search_term);
-    printf("Enter Quantity Sold: ");
-    scanf("%d", &sale_quantity);
-    Flush;
 
     if (search_Record(i_root, &ptr_i, search_term)) {
+        while (!quantityNotNegative) {
+            printf("Enter Quantity Sold: ");
+            scanf("%d", &sale_quantity);
+            Flush;
+            if (sale_quantity < 0) {
+                quantityNotNegative = false;
+                printf("Cannot input number below 0!\n");
+            } else {
+                quantityNotNegative = true;
+            }
+        }
         if (sale_quantity <= 0 || sale_quantity > ptr_i->item.quantity) {
-            printf("Error: Invalid sale quantity.\n");
+            printf("Out of stock!\n");
             return;
         }
         strcpy(entry.itemNumber, ptr_i->item.itemNumber);
@@ -309,7 +320,7 @@ void sales(ItemNd i_root, SalesNd *s_root, int *sales_number_generate) {
         ptr_i->item.quantity -= sale_quantity;
         add_Sales(s_root, entry);
     } else {
-        printf("Not Found!\n");
+        printf("Entry Not Found!\n");
     }
 }
 
@@ -318,24 +329,29 @@ void goods(ItemNd i_root, GoodsNd *s_root, int *goods_number_generate) {
     char search_term[10];
     int sale_quantity = 0;
     ItemNd ptr_i = NULL;
+    bool quantityNotNegative = false;
 
     printf("Enter Item Number: ");
-    Flush;
+    //Flush;
     gets(search_term);
-    printf("Enter Quantity Sold: ");
-    scanf("%d", &sale_quantity);
-    Flush;
 
     if (search_Record(i_root, &ptr_i, search_term)) {
-        if (sale_quantity <= 0 || sale_quantity > ptr_i->item.quantity) {
-            printf("Error: Invalid sale quantity.\n");
-            return;
+        while (!quantityNotNegative) {
+            printf("Enter Quantity Received: ");
+            scanf("%d", &sale_quantity);
+            Flush;
+            if (sale_quantity < 0) {
+                quantityNotNegative = false;
+                printf("Cannot input number below 0!\n");
+            } else {
+                quantityNotNegative = true;
+            }
         }
         strcpy(entry.itemNumber, ptr_i->item.itemNumber);
         strcpy(entry.itemName, ptr_i->item.itemName);
         entry.quantity_sold = sale_quantity;
         entry.goods_number = (*goods_number_generate)++;
-        ptr_i->item.quantity -= sale_quantity;
+        ptr_i->item.quantity += sale_quantity;
         add_Goods(s_root, entry);
     } else {
         printf("Not Found!\n");
@@ -343,6 +359,7 @@ void goods(ItemNd i_root, GoodsNd *s_root, int *goods_number_generate) {
 }
 
 void Display_All(ItemNd ptr) {
+    if (ptr == NULL) return;
     if (ptr->left != NULL) {
         Display_All(ptr->left);
     }
@@ -357,6 +374,7 @@ void Display_All(ItemNd ptr) {
 }
 
 void Display_Sales(SalesNd ptr) {
+    if (ptr == NULL) return;
     if (ptr->left != NULL) {
         Display_Sales(ptr->left);
     }
@@ -371,8 +389,9 @@ void Display_Sales(SalesNd ptr) {
 }
 
 void Display_Goods(GoodsNd ptr) {
+    if (ptr == NULL) return;
     if (ptr->left != NULL) {
-        Display_Sales(ptr->left);
+        Display_Goods(ptr->left);
     }
     printf("Item Number: %s\n", ptr->data.itemNumber);
     printf("Item Name: %s\n", ptr->data.itemName);
@@ -390,36 +409,72 @@ int main(void) {
     GoodsNd g_root = NULL;
     int sales_number_generate = 1;
     int goods_number_generate = 1;
+    bool isRepeating = true;
 
-    int choice;
-    menu();
-    printf("Input:\n");
-    scanf("%d", &choice);
-
-    switch (choice) {
-        case 1:
-            ITEM entry;
-            entry = input(i_root);
-            add_Record(&i_root, entry);
-            break;
-        case 2:
-            edit_Record(&i_root);
-            break;
-        case 3:
-            sales(i_root, &s_root, &sales_number_generate);
-            break;
-        case 4:
-            goods(i_root, &g_root, &goods_number_generate);
-            break;
-        case 5:
-            Display_Sales(s_root);
-            break;
-        case 6:
-            Display_Goods(g_root);
-            break;
-        case 7:
-            Display_All(i_root);
-            break;
-        default:
+    while (isRepeating) {
+        int choice;
+        menu();
+        printf("Input:\n");
+        scanf("%d", &choice);
+        Flush;
+        switch (choice) {
+            case 1:
+                ITEM entry;
+                entry = input(i_root);
+                add_Record(&i_root, entry);
+                printf("Done...");
+                break;
+            case 2:
+                if (i_root == NULL) {
+                    printf("Nothing to edit!\n");
+                } else {
+                    edit_Record(&i_root);
+                }
+                break;
+            case 3:
+                if (i_root == NULL) {
+                    printf("Inventory Empty\n");
+                } else {
+                    sales(i_root, &s_root, &sales_number_generate);
+                }
+                break;
+            case 4:
+                if (i_root == NULL) {
+                    printf("Inventory Empty!\n");
+                } else {
+                    goods(i_root, &g_root, &goods_number_generate);
+                }
+                break;
+            case 5:
+                if (s_root == NULL) {
+                    printf("Inventory Empty!\n");
+                } else {
+                    Display_Sales(s_root);
+                }
+                break;
+            case 6:
+                if (g_root == NULL) {
+                    printf("Inventory Empty!\n");
+                } else {
+                    Display_Goods(g_root);
+                }
+                break;
+            case 7:
+                if (i_root == NULL) {
+                    printf("Inventory Empty!\n");
+                } else {
+                    Display_All(i_root);
+                }
+                break;
+            case 8:
+                isRepeating = false;
+                printf("Exiting...\n");
+                exit(0);
+            default:
+                exit(1);
+        }
+        printf("\nPress Any Button to continue\n");
+        getch();
+        system("cls");
     }
 }

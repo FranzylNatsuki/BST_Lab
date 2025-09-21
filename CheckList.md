@@ -6,14 +6,14 @@
 
 ## 📦 Setup
 
-* [ ] Write program description, full name, start date, finish date at top of code.
-* [ ] Define **3 structs**:
+* [/] Write program description, full name, start date, finish date at top of code.
+* [/] Define **3 structs**:
 
     * [ ] `ITEM` (itemNumber, itemName, quantity, price)
     * [ ] `SALES` (sales\_number, itemNumber, quantity\_sold)
     * [ ] `GOODS` (goods\_number, itemNumber, quantity\_received)
-* [ ] Define **3 BST node structs** (`ItemNd`, `SalesNd`, `GoodsNd`).
-* [ ] Implement BST operations:
+* [/] Define **3 BST node structs** (`ItemNd`, `SalesNd`, `GoodsNd`).
+* [/] Implement BST operations:
 
     * [ ] Insert node
     * [ ] Search node
@@ -23,7 +23,7 @@
 
 ## 🖥️ Menu
 
-* [ ] Print this menu:
+* [/] Print this menu:
 
   ```
   <LastName> Enterprise
@@ -36,7 +36,7 @@
   7] Display All Items
   8] Exit
   ```
-* [ ] Loop until user chooses **Exit**.
+* [/] Loop until user chooses **Exit**.
 
 ---
 
@@ -44,13 +44,13 @@
 
 ### 1. Add New Item
 
-* [ ] Prompt user for item number (string len 3), item name, quantity, price.
-* [ ] Insert into **Item BST** (use `itemNumber` as BST key).
-* [ ] ❗ Error trap: reject if item number already exists.
+* [/] Prompt user for item number (string len 3), item name, quantity, price.
+* [/] Insert into **Item BST** (use `itemNumber` as BST key).
+* [/] ❗ Error trap: reject if item number already exists.
 
 ### 2. Edit Item Information
 
-* [ ] Search item by `itemNumber`.
+* [] Search item by `itemNumber`.
 * [ ] Allow edit of:
 
     * [ ] Item Name
@@ -59,20 +59,20 @@
 
 ### 3. Sales
 
-* [ ] Prompt user for:
+* [/] Prompt user for:
 
     * Item number
     * Quantity bought
-* [ ] Search item in **Item BST**.
-* [ ] If valid:
+* [/] Search item in **Item BST**.
+* [/] If valid:
 
-    * [ ] Auto-decrease item quantity.
-    * [ ] Insert record into **Sales BST** (unique `sales_number`).
-* [ ] ❗ Error traps:
+    * [/] Auto-decrease item quantity.
+    * [/] Insert record into **Sales BST** (unique `sales_number`).
+* [/] ❗ Error traps:
 
-    * Item does not exist
-    * Quantity bought ≤ 0
-    * Not enough stock (or quantity on hand = 0)
+    * [/] Item does not exist
+    * [/] Quantity bought ≤ 0
+    * [/] Not enough stock (or quantity on hand = 0)
 
 ### 4. Goods Receipt
 
