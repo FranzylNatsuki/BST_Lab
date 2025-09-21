@@ -5,7 +5,7 @@ that contains all obtained goods. This is all implemented with a
 linked list Binary Tree ADT.
 Franzyl Bjorn L. Macalua
 Date Started: 9/18/2025
-Data Finished: 9/ /2025
+Data Finished: 9/21/2025
 */
 
 #include <stdio.h>
@@ -74,6 +74,7 @@ void Display_Sales(SalesNd ptr);
 void Display_Goods(GoodsNd ptr);
 
 void menu(void) {
+    printf("Macalua Enterprise\n");
     printf("1] Add New Item\n");
     printf("2] Edit Item Information\n");
     printf("3] Sales\n");
@@ -475,6 +476,5 @@ int main(void) {
         }
         printf("\nPress Any Button to continue\n");
         getch();
-        system("cls");
     }
 }
